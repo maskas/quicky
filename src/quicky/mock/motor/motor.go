@@ -10,10 +10,10 @@ type motorMock struct {
 	name string
     voltage <-chan float64
     rpm float64
-    rpmOutput <-chan float64
+    rpmOutput chan<- float64
 }
 
-func Create(name string, voltage <-chan float64, rpmOutput <-chan float64) *motorMock {
+func Create(name string, voltage <-chan float64, rpmOutput chan<- float64) *motorMock {
 	instance := motorMock{name: name, voltage: voltage, rpm: 0, rpmOutput: rpmOutput}
 	instance.run()
 	return &instance
@@ -30,8 +30,7 @@ func (r *motorMock) run() {
 	}()
 	go func() { 
 		for {
-			//fmt.Println("TEST")
-			r.rpmOutput<- = r.rpm
+			r.rpmOutput <- r.rpm
 			time.Sleep(time.Second);
 		}
 	}()

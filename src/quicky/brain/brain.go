@@ -6,10 +6,10 @@ import "fmt"
 type brain struct {
 	name string
     telemetry <-chan float64
-    controller <-chan float64
+    controller chan<- float64
 }
 
-func Create(name string, telemetry <-chan float64, controller <-chan float64) *brain {
+func Create(name string, controller chan<- float64, telemetry <-chan float64) *brain {
 	instance := brain{name: name, telemetry: telemetry, controller: controller}
 	instance.run()
 	return &instance
@@ -17,10 +17,10 @@ func Create(name string, telemetry <-chan float64, controller <-chan float64) *b
 
 func (r *brain) run() {
     fmt.Printf("\"%s\" has been created\n", r.name)
-	go func() { 
+	go func() {
 		for {
 			telemetry := <-r.telemetry
-			fmt.Printf("%g", telemetry);
+			fmt.Printf("\"%s\" telemetry %g\n", r.name, telemetry);
 		}
 	}()
 }
