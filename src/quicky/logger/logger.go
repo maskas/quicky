@@ -1,12 +1,11 @@
 
-package brain
+package logger
 
 import "fmt"
 
-type brain struct {
+type Log struct {
 	name string
-    telemetry <-chan float64
-    controller chan<- float64
+    
 }
 
 func Create(name string, controller chan<- float64, telemetry <-chan float64) *brain {
@@ -15,17 +14,6 @@ func Create(name string, controller chan<- float64, telemetry <-chan float64) *b
 	return &instance
 }
 
-func (r *brain) run() {
-    fmt.Printf("\"%s\" has been created\n", r.name)
-	go func() {
-		for {
-			telemetry := <-r.telemetry
-			fmt.Printf("\"%s\" telemetry %g\n", r.name, telemetry);
-		}
-	}()
-}
-
-func (r *brain) DisplayStatus() {
-
-	fmt.Printf("\"%s\" is thinking\n", r.name);
+func (r *Log) write(topic string, message string, level int) {
+    fmt.Printf("%s: %s", topic, message)
 }
