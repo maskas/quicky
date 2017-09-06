@@ -6,19 +6,25 @@ import "fmt"
 
 type motorMock struct {
 	name string
-    pwm float32
-    rpm float32
+    voltage <-chan float64
+    rpm float64
 }
 
-func Create(name string) motorMock {
-	instance := motorMock{name: name, pwm: 0, rpm: 0}
+func Create(name string, voltage <-chan float64) *motorMock {
+	instance := motorMock{name: name, voltage: voltage, rpm: 0}
 	instance.run()
-	return instance
+	return &instance
 }
 
 func (r *motorMock) run() {
-    
-	fmt.Printf("\"%s\" has been created\n", r.name)
+    fmt.Printf("\"%s\" has been created\n", r.name)
+	go func() { 
+		for {
+			voltage := <-r.voltage
+			r.rpm = voltage * 1.5
+			fmt.Println(r.rpm);
+		}
+	}()
 }
 
 func (r *motorMock) DisplayStatus() {
