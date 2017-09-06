@@ -8,13 +8,18 @@ package main
 import "fmt"
 import "time"
 import motorMock "./src/quicky/mock/motor"
+import brain "./src/quicky/brain"
 
 func main() {
     fmt.Println("Program has been started");
 
-
     leftMotorVoltage := make(chan float64)
-	motorMock := motorMock.Create("Left motor", leftMotorVoltage)
+    leftMotorRpm := make(chan float64)
+
+    brain.Create("Motorbrain", leftMotorVoltage, leftMotorRpm)
+
+    motorMock := motorMock.Create("Left motor", leftMotorVoltage, leftMotorRpm)
+
     
     motorMock.DisplayStatus()
     leftMotorVoltage <- 5.0
@@ -22,7 +27,17 @@ func main() {
     motorMock.DisplayStatus()
     time.Sleep(time.Second);   
     motorMock.DisplayStatus()
-        
-
+    time.Sleep(time.Second);   
+    motorMock.DisplayStatus()
+    time.Sleep(time.Second);   
+    motorMock.DisplayStatus()
+    time.Sleep(time.Second);   
+    motorMock.DisplayStatus()
+    time.Sleep(time.Second);   
+    motorMock.DisplayStatus()
+    time.Sleep(time.Second);   
+    motorMock.DisplayStatus()
+    time.Sleep(time.Second);   
+    motorMock.DisplayStatus()
   
 }
